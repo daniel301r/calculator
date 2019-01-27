@@ -1,0 +1,111 @@
+* {
+    user-select: none;
+    margin: 0;
+    padding: 0;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
+}
+
+body {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Poppins', sans-serif;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+    flex-direction: column;
+    background-color: blue;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 3px 3px 5px 0px rgba(0,0,0,0.75);
+}
+
+.top {
+    display: flex;
+    justify-content: space-between;
+    line-height: 2rem;
+    width: 100%;
+    padding-bottom: 1rem;
+    line-height: 5rem;
+}
+
+.animation {
+    font-size: 2rem;
+    margin-left: 0.7rem;
+    font-size: 4rem;
+    margin-left: 0.3rem;
+}
+
+.screen {
+    padding: 0.07rem;
+    background-color: #202275;
+    width: 78%;
+    border-radius: 0.5rem;
+    box-shadow: 1px 1px 1px 0px rgba(0,0,0,0.5);
+}
+
+.screenNums {
+    float: right;
+    padding-right: 0.9rem;
+    font-size: 2.3rem;
+    color: #0be7e8;
+    font-weight: 600;
+    letter-spacing: 0.13rem;
+}
+
+.keyboard {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    grid-gap: 0.25rem;
+}
+
+.keyboard > * {
+    width: 5.3rem;
+    height: 5.1rem;
+    background-color: beige;
+}
+
+.button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.6rem;
+    font-size: 2.3rem;
+    font-weight: 700;
+    background-color: #000000c7;
+    color: chartreuse;
+    box-shadow: 1px 1px 1px 0px rgba(0,0,0,0.5);
+    cursor: pointer;
+
+}
+
+.button:hover{
+    background-color: #2dafaf;
+    transform: scale(1.01);
+    transition: all 0.3s;
+}
+
+.button:active {
+    transform: translateY(2px);
+}
+
+.number {
+    font-size: 3.5rem;
+    color: #ffbe00f2;
+}
+
+.number:hover{
+    background-color: #730ad6;
+}
+
