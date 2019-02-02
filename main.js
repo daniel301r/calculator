@@ -1,51 +1,74 @@
 const keyboard = document.querySelectorAll(".button");
 const screenDisplay = document.querySelector(".screenNums");
+const mathOperator = document.querySelector(".mathFunction");
+
 
 // ----- play around with the below code tomorrow ---- that's how you target shit!!
 
 // const key = e.target
 // const action = key.dataset.action
 
-// ------------ !!!!!!! -------- made continuation variable - if true do different functions i.e. add amount to total sum and then
-// only use a first number - probably will have to change loads of code
-
-
 let mathFunction = "";
 let totalSum = 0;
-let firstNum = [];
-let nextNum = []
+let firstNum = "";
+let nextNum = "";
 
 let secondNum = false;
 let continuation = false;
 
 function addDisplayNumbers(num) {
     if (continuation) {
+        stopDisplayOperator();
         if (firstNum.length <= 0) {
-            firstNum.push(num);
+            firstNum += num;
             screenDisplay.innerHTML = num;
         } else {
-            firstNum.push(num);
-            screenDisplay.innerHTML = firstNum.join("");
+            firstNum += num;
+            screenDisplay.innerHTML = firstNum;
         }   
     } else if (!secondNum) {
         if (firstNum.length <= 0) {
-            firstNum.push(num);
+            firstNum += num;
             screenDisplay.innerHTML = num;
         } else {
-            firstNum.push(num);
-            screenDisplay.innerHTML = firstNum.join("");
+            firstNum += num;
+            screenDisplay.innerHTML = firstNum;
         }   
     } else {
+        stopDisplayOperator();
         if (nextNum.length <= 0) {
-            nextNum.push(num);
+            nextNum += num;
             screenDisplay.innerHTML = num;
         } else {
-            nextNum.push(num);
-            screenDisplay.innerHTML = nextNum.join("");
+            nextNum += num;
+            screenDisplay.innerHTML = nextNum;
         }
     }
 }
-function determineState() {
+
+function displayOperator(operator) {
+    mathOperator.style.display = "block";
+    screenDisplay.style.padding = 0;
+    mathOperator.innerHTML = operator;
+
+}
+
+function stopDisplayOperator() {
+    mathOperator.style.display = "none";
+    screenDisplay.style.paddingRight = "0.3rem";
+}
+
+function reset() {
+    totalSum = 0;
+    firstNum = "";
+    nextNum = "";
+    screenDisplay.innerHTML = "0";
+    secondNum = false;
+    continuation = false;
+    mathFunction = "";
+}
+
+function setState() {
     if (firstNum.length > 0 && nextNum.length > 0) {
         continuation = true;
     } else if (!secondNum) {
@@ -55,61 +78,60 @@ function determineState() {
     }
 }
 
-function parseFirstNumber() {
-    firstNum = firstNum.join("");
-    firstNum = parseInt(firstNum, 10);
-}
-
-function parseBothNumbers() {
-    firstNum = firstNum.join("");
-    firstNum = parseInt(firstNum, 10);
-    nextNum = nextNum.join("");
-    nextNum = parseInt(nextNum, 10);
-}
-
 function calculate () {
     if (continuation) {
         if (firstNum.length === 0) {
             screenDisplay.innerHTML = totalSum;
         } else if (nextNum.length === 0) {
-            parseFirstNumber();
             if (mathFunction === "add"){
-                totalSum += firstNum;
+                totalSum += parseFloat(firstNum);
             } else if (mathFunction === "subtract") {
-                totalSum -= firstNum;
+                totalSum -= parseFloat(firstNum);
             } else if (mathFunction === "divide") {
-                totalSum /= firstNum;
+                totalSum /= parseFloat(firstNum);
             } else if (mathFunction === "multiply"){
-                totalSum *= firstNum;
+                totalSum *= parseFloat(firstNum);
             }
-            firstNum = [];
+            firstNum = "";
             screenDisplay.innerHTML = totalSum;
         } else {
-            parseBothNumbers();
             if (mathFunction === "add"){
-                totalSum = firstNum + nextNum;
+                totalSum = parseFloat(firstNum) + parseFloat(nextNum);
             } else if (mathFunction === "subtract") {
-                totalSum = firstNum - nextNum;
+                totalSum = parseFloat(firstNum) - parseFloat(nextNum);
             } else if (mathFunction === "divide") {
-                totalSum = firstNum / nextNum;
+                totalSum = parseFloat(firstNum) / parseFloat(nextNum);
             } else if (mathFunction === "multiply"){
-                totalSum = firstNum * nextNum;
+                totalSum = parseFloat(firstNum) * parseFloat(nextNum);
             }
             screenDisplay.innerHTML = totalSum;
-            firstNum = [];
-            nextNum = [];
+            firstNum = "";
+            nextNum = "";
         }
     }
 }
 
+/*
+
+------- I tried to use this function to clear the last entered number but, I imagine, because it wasn't specifying whether the
+argument 'num' is firstNum or nextNum that it didn't change the original varibale - how can I get it to do that?
+
 function bkSpace (num) {
-    num.pop();
-    if (num.length === 0) {
-        screenDisplay.innerHTML = "0";
-    } else {
-        screenDisplay.innerHTML = num.join("");
+    if (firstNum.length === 0 &&
+        nextNum.length === 0 &&
+        totalSum > 0) {
+            screenDisplay.innerHTML = totalSum;
+    } else {        
+       num = num.slice(0, num.length - 1);
+        if (num.length === 0) {
+            screenDisplay.innerHTML = "0";
+        } else {
+            screenDisplay.innerHTML = num;
+        }
     }
 }
+*/
+
 
 function zero (num) {
     if (num.length === 0) {
@@ -119,8 +141,8 @@ function zero (num) {
             screenDisplay.innerHTML = "0";
         }
     } else {
-        num.push("0");
-        screenDisplay.innerHTML = num.join("");
+        num += "0";
+        screenDisplay.innerHTML = num;
     }
 }
 
@@ -152,84 +174,167 @@ function buttonHit() {
         addDisplayNumbers("9"); 
     } else if (this.id === "bkSpace") {
         if (continuation || !secondNum){
-            bkSpace(firstNum);
+            if (firstNum.length === 0 &&
+                nextNum.length === 0 &&
+                totalSum > 0) {
+                    screenDisplay.innerHTML = totalSum;
+            } else {                              
+                firstNum = firstNum.slice(0, firstNum.length - 1);              
+                if (firstNum.length === 0) {
+                    screenDisplay.innerHTML = "0";
+                } else {
+                    screenDisplay.innerHTML = firstNum;
+                }
+            }
         } else {
-            bkSpace(nextNum);
+            if (firstNum.length === 0 &&
+                nextNum.length === 0 &&
+                totalSum > 0) {
+                    screenDisplay.innerHTML = totalSum;
+            } else {                 
+                nextNum = nextNum.slice(0, nextNum.length - 1); 
+                console.log(nextNum);     
+                if (nextNum.length === 0) {
+                    screenDisplay.innerHTML = "0";
+                } else {
+                    screenDisplay.innerHTML = nextNum;
+                }
+            }    
         }
     } else if (this.id === "clearScreen") {   
-        if (continuation) {
-            firstNum = [];
-        } else if (!secondNum) {
-            firstNum = [];
+        if (firstNum.length === 0 &&
+            nextNum.length === 0 &&
+            totalSum > 0) {
+                screenDisplay.innerHTML = totalSum;
         } else {
-            nextNum = [];
+            if (continuation) {
+                firstNum = "";
+            } else if (!secondNum) {
+                firstNum = "";
+            } else {
+                nextNum = "";
+            }
+            screenDisplay.innerHTML = "0";
         }
-        screenDisplay.innerHTML = "0";
+       
     } else if (this.id === "clearAll") {
-        totalSum = 0;
-        firstNum = [];
-        nextNum = [];
-        screenDisplay.innerHTML = "0";
-        secondNum = false;
-        continuation = false;
-        mathFunction = "";
+
+        reset();
+        stopDisplayOperator();
 
     } else if (this.id === "add") {
         
-        determineState();
+        setState();
         calculate();      
         mathFunction = this.id;
+        displayOperator("+");
 
     } else if (this.id === "subtract") {
 
-        determineState();
+        setState();
         calculate();
         mathFunction = this.id;
+        displayOperator("-");
 
     } else if (this.id === "divide") {
         
-        determineState();
+        setState();
         calculate();
         mathFunction = this.id;
+        displayOperator("/");
 
     } else if (this.id === "multiply") {
         
-        determineState();       
+        setState();       
         calculate();
         mathFunction = this.id;
+        displayOperator("x");
 
     } else if (this.id === "equals") {
+        stopDisplayOperator();
         if (continuation) {
-            parseFirstNumber();
             if (mathFunction === "add"){
-                totalSum += firstNum;
+                totalSum += parseFloat(firstNum);
             } else if (mathFunction === "subtract") {
-                totalSum -= firstNum;
+                totalSum -= parseFloat(firstNum);
             } else if (mathFunction === "divide") {
-                totalSum /= firstNum;
+                totalSum /= parseFloat(firstNum);
             } else if (mathFunction === "multiply"){
-                totalSum *= firstNum;
+                totalSum *= parseFloat(firstNum);
             }
             screenDisplay.innerHTML = totalSum;
-            firstNum = [];
+            firstNum = "";
             continuation = true;
             secondNum = false;
+        } else {          
+            if (mathFunction === "add"){
+                totalSum = parseFloat(firstNum) + parseFloat(nextNum);
+            } else if (mathFunction === "subtract") {
+                totalSum = parseFloat(firstNum) - parseFloat(nextNum);
+            } else if (mathFunction === "divide") {
+                totalSum = parseFloat(firstNum) / parseFloat(nextNum);
+            } else if (mathFunction === "multiply"){
+                totalSum = parseFloat(firstNum) * parseFloat(nextNum);
+            }
+            screenDisplay.innerHTML = totalSum;
+            firstNum = "";
+            nextNum = "";
+            continuation = true;
+            secondNum = false;
+        }
+    } else if (this.id === "decimal") {
+        if (continuation || !secondNum){
+            if (firstNum.includes(".")){
+                screenDisplay.innerHTML = firstNum;
+            } else if (firstNum.length === 0 && nextNum.length === 0) {
+                firstNum = totalSum + ".";
+                totalSum = 0;
+                screenDisplay.innerHTML =  firstNum;
+                continuation = false;
+            } else {
+                if (firstNum === "") {
+                    firstNum = "0.";
+                    screenDisplay.innerHTML = firstNum;
+                } else {
+                    firstNum += ".";
+                    screenDisplay.innerHTML = firstNum;
+                }
+            }
         } else {
-            parseBothNumbers();            
-            if (mathFunction === "add"){
-                totalSum = firstNum + nextNum;
-            } else if (mathFunction === "subtract") {
-                totalSum = firstNum - nextNum;
-            } else if (mathFunction === "divide") {
-                totalSum = firstNum / nextNum;
-            } else if (mathFunction === "multiply"){
-                totalSum = firstNum * nextNum;
+            if (nextNum.length === 0) {
+                screenDisplay = firstNum;
+            } else if (nextNum.includes(".")){
+                screenDisplay.innerHTML = nextNum;
+            } else {
+                if (nextNum === "") {
+                    nextNum = "0.";
+                    screenDisplay.innerHTML = nextNum;
+                } else {
+                    nextNum += ".";
+                    screenDisplay.innerHTML = nextNum;
+                }
             }
-            screenDisplay.innerHTML = totalSum;
-            firstNum = [];
-            nextNum = [];
-            continuation = true;
-            secondNum = false;
+        }
+    } else if (this.id === "negative") {
+        if (continuation || !secondNum) {
+            if (firstNum.includes("-")){
+                screenDisplay.innerHTML = firstNum;
+            } else if (firstNum.length === 0 && nextNum.length === 0) {
+                firstNum = "-" + totalSum;
+                totalSum = 0;
+                screenDisplay.innerHTML =  firstNum;
+                continuation = false;
+            } else {
+                firstNum = "-" + firstNum;
+                screenDisplay.innerHTML = firstNum;
+            }
+        } else {
+            if (nextNum.includes("-")) {
+                screenDisplay.innerHTML = nextNum;
+            } else {
+                nextNum = "-" + nextNum;
+                screenDisplay.innerHTML = nextNum;
+            }
         }
     }
 }

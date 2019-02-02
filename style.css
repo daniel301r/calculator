@@ -52,15 +52,24 @@ body {
     width: 78%;
     border-radius: 0.5rem;
     box-shadow: 1px 1px 1px 0px rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: flex-end;
 }
 
 .screenNums {
-    float: right;
-    padding-right: 0.9rem;
     font-size: 2.3rem;
     color: #0be7e8;
     font-weight: 600;
     letter-spacing: 0.13rem;
+    padding-right: 0.3rem;
+}
+
+.mathFunction {
+    color: #0be7e8;
+    font-weight: 600;
+    padding: 0 0.2rem;
+    font-size: 1.5rem;
+    display: none;
 }
 
 .keyboard {
