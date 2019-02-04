@@ -133,26 +133,31 @@ function bkSpace (num) {
 */
 
 
-function zero (num) {
-    if (num.length === 0) {
-        if (continuation) {
-            screenDisplay.innerHTML = totalSum;
-        } else {
-            screenDisplay.innerHTML = "0";
-        }
-    } else {
-        num += "0";
-        screenDisplay.innerHTML = num;
-    }
-}
-
 function buttonHit() {
-
+    // I orginally had this in a seperate function but the same problem happened as with bkSpace
     if (this.id === "zero"){
         if (!secondNum || continuation) {
-            zero(firstNum);
+            if (firstNum.length === 0) {
+                if (continuation) {
+                    screenDisplay.innerHTML = totalSum;
+                } else {
+                    screenDisplay.innerHTML = "0";
+                }
+            } else {
+                firstNum += "0";
+                screenDisplay.innerHTML = firstNum;
+            } 
         } else {
-            zero(nextNum);
+            if (nextNum.length === 0) {
+                if (continuation) {
+                    screenDisplay.innerHTML = totalSum;
+                } else {
+                    screenDisplay.innerHTML = "0";
+                }
+            } else {
+                nextNum += "0";
+                screenDisplay.innerHTML = nextNum;
+            }
         }      
     } else if (this.id === "one") {    
         addDisplayNumbers("1");         
