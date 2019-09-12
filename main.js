@@ -2,12 +2,6 @@ const keyboard = document.querySelectorAll(".button");
 const screenDisplay = document.querySelector(".screenNums");
 const mathOperator = document.querySelector(".mathFunction");
 
-
-// ----- play around with the below code tomorrow ---- that's how you target shit!!
-
-// const key = e.target
-// const action = key.dataset.action
-
 let mathFunction = "";
 let totalSum = 0;
 let firstNum = "";
@@ -111,30 +105,7 @@ function calculate () {
     }
 }
 
-/*
-
-------- I tried to use this function to clear the last entered number but, I imagine, because it wasn't specifying whether the
-argument 'num' is firstNum or nextNum that it didn't change the original varibale - how can I get it to do that?
-
-function bkSpace (num) {
-    if (firstNum.length === 0 &&
-        nextNum.length === 0 &&
-        totalSum > 0) {
-            screenDisplay.innerHTML = totalSum;
-    } else {        
-       num = num.slice(0, num.length - 1);
-        if (num.length === 0) {
-            screenDisplay.innerHTML = "0";
-        } else {
-            screenDisplay.innerHTML = num;
-        }
-    }
-}
-*/
-
-
 function buttonHit() {
-    // I orginally had this in a seperate function but the same problem happened as with bkSpace
     if (this.id === "zero"){
         if (!secondNum || continuation) {
             if (firstNum.length === 0) {
@@ -197,8 +168,7 @@ function buttonHit() {
                 totalSum > 0) {
                     screenDisplay.innerHTML = totalSum;
             } else {                 
-                nextNum = nextNum.slice(0, nextNum.length - 1); 
-                console.log(nextNum);     
+                nextNum = nextNum.slice(0, nextNum.length - 1);     
                 if (nextNum.length === 0) {
                     screenDisplay.innerHTML = "0";
                 } else {
@@ -223,24 +193,18 @@ function buttonHit() {
         }
        
     } else if (this.id === "clearAll") {
-
         reset();
         stopDisplayOperator();
-
     } else if (this.id === "add") {
-        
         setState();
         calculate();      
         mathFunction = this.id;
         displayOperator("+");
-
     } else if (this.id === "subtract") {
-
         setState();
         calculate();
         mathFunction = this.id;
         displayOperator("-");
-
     } else if (this.id === "divide") {
         
         setState();
